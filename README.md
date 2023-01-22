@@ -294,7 +294,7 @@ spec:
 
 
 - Make the Access Modes : ReadWriteMany
-- Made som tweaks on the pv and pvc because there were a problem with the paths and another problem causing the claim to stay pending waiting for consumer ( tried to create a consumer, an error appeard in the local storage type) so I tweaked the pv and pvc
+- Made some tweaks on the pv and pvc because there were a problem with the paths and another problem causing the claim to stay pending waiting for consumer ( tried to create a consumer, an error appeard in the local storage type) so I tweaked the pv and pvc
 - (Reffered to Documentation)
 
 
