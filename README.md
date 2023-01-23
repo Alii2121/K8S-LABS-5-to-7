@@ -1,6 +1,6 @@
 # K8S-LABS-5-to-7
 
-## K8S Lab 5 
+# K8S Lab 5 
 * NOTE: Deployment will take place in a namespace called **lab3**
 
 ### Create basic resources
@@ -305,7 +305,7 @@ spec:
 
 ----------------
 
-## K8S LAB 7
+# K8S LAB 7
 
 
 ### 1-The DevOps team would like to get the list of all Namespaces in the cluster. Get the list and save it to /opt/namespaces.
