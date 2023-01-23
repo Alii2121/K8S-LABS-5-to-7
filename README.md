@@ -293,7 +293,7 @@ spec:
 ### 8-Update the Access Mode on the claim to bind it to the PV?
 
 
-- Make the Access Modes : ReadWriteMany
+- Make the Access Modes : ReadWriteOnce
 - Made some tweaks on the pv and pvc because there were a problem with the paths and another problem causing the claim to stay pending waiting for consumer ( tried to create a consumer, an error appeard in the local storage type) so I tweaked the pv and pvc
 - (Reffered to Documentation)
 
