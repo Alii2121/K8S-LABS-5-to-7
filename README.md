@@ -303,9 +303,134 @@ spec:
 
 
 
+----------------
+
+## K8S LAB 7
+
+
+### 1-The DevOps team would like to get the list of all Namespaces in the cluster. Get the list and save it to /opt/namespaces.
+```bash
+kubectl get namespaces -o yaml > /opt/namespaces
+```
+---------------------
+### 2- create  ServiceAccount named neptune-sa-v2 in Namespace neptune.
+
+```bash 
+k create ns neptune 
+k create sa neptune-sa-v2 -n neptune
+```
 
 
 
+
+------------------------------
+### 3-Create a new ConfigMap named cm-3392845. Use the spec given on the below.
+
+ConfigName Name: cm-3392845
+
+Data: DB_NAME=SQL3322
+
+Data: DB_HOST=sql322.mycompany.com
+
+Data: DB_PORT=3306
+
+```bash
+kubectl create configmap cm-3392845 --from-literal=DB_NAME=SQL3322 --from-literal=DB_HOST=sql322.mycompany.com --from-literal=DB_PORT=3306
+```
+
+
+
+
+
+
+-------------------------------
+### 4-Team Pluto needs a new cluster internal Service. Create a ClusterIP Service named project-plt-6cc-svc in Namespace pluto. This Service should expose ### a single Pod named project-plt-6cc-api of image nginx:1.17.3-alpine, create that Pod as well. The Pod should be identified by label project: plt-6cc-api. 
+### The Service should use tcp port redirection of 3333:80.
+
+```bash
+k create ns pluto
+
+k run project-plt-6cc-api --image=nginx:1.17.3-alpine --namespace=pluto --labels=project=plt-6cc-api
+
+k expose pod project-plt-6cc-api --port=80 --target-port=3333 --name=project-plt-6cc-svc --type=ClusterIP --namespace=pluto
+```
+
+---------------------------------------------------------------
+### 5-Create a new PersistentVolume named earth-project-earthflower-pv. It should have a capacity of 2Gi, accessMode ReadWriteOnce, hostPath /Volumes/Data and no storageClassName defined.
+
+- Next create a new PersistentVolumeClaim in Namespace earth named earth-project-earthflower-pvc . It should request 2Gi storage, accessMode ReadWriteOnce and should not define a storageClassName. The PVC should bound to the PV correctly.
+
+- Finally create a new Deployment project-earthflower in Namespace earth which mounts that volume at /tmp/project-data. The Pods of that Deployment should be of image httpd:2.4.41-alpine.
+
+-----
+- pv
+
+```YAML
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: earth-project-earthflower-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /Volumes/Data
+  storageClassName: ""
+```
+- pvc
+```YAML
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: earth-project-earthflower-pvc
+  namespace: earth
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ""
+  volumeName: earth-project-earthflower-pv
+```
+
+- Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-earthflower
+  namespace: earth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-earthflower
+  template:
+    metadata:
+      labels:
+        app: project-earthflower
+    spec:
+      containers:
+      - name: project-earthflower
+        image: httpd:2.4.41-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: project-data
+          mountPath: /tmp/project-data
+      volumes:
+      - name: project-data
+        persistentVolumeClaim:
+          claimName: earth-project-earthflower-pvc
+```
+
+
+
+
+-----------------------------------------------------------------
 
 
 ---------
